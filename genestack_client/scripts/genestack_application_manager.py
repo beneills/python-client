@@ -142,6 +142,10 @@ class ListVersions(Command):
             help='show only versions owned by current user'
         )
         p.add_argument(
+            '-l', action='store_true', dest='show_loading_state',
+            help='display loading state of version'
+        )
+        p.add_argument(
             'app_id', metavar='<appId>',
             help='application identifier to show versions'
         )
@@ -175,6 +179,8 @@ class ListVersions(Command):
             output_string += '%-*s' % (max_len + 2, item)
             if self.args.show_release_state:
                 output_string += '%12s' % ('released' if visibility_map[item]['released'] else 'not released')
+            if self.args.show_loading_state:
+                output_string += '%11s' % visibility_map[item]['loadingState'].lower()
             if self.args.show_visibilities:
                 levels = visibility_map[item]['visibilityLevels']
                 visibility_description = 'all: ' + ('+' if 'all' in levels else '-')
